@@ -1,101 +1,99 @@
-﻿// (Record) Kitap -> Id, Title, Description, pageSize, PublishDate, Stock 
-// (Record) Author -> Id, name, surname, 
-// (Class) Category -> Id, name
+﻿//(Record) Kitap -> Id,Title , Description, PageSize, PublishDate, ISBN , Stock
+//(Record) Author -> Id,Name, Surname
+//(Cbelass) Category -> Id,Name alanı 
 
 
-// Kitaplar listesi oluşturunuz
-// yazarlar listesi oluşturunuz
-// Kategoriler listesi oluşturunuz 
+// Category eklerken -> Id veya Name alanları benzersiz olmalı 
+// Author eklerken Id (name surname)
+
+//Kitaplar listesi oluşturunuz
+//Yazarlar   "         "
+//Kategoriler  "       "        
+
 
 // Yazarları ekrana bastıran kodu yazınız
 // Kitapları ekrana bastıran kodu yazınız
-// Kategorileri ekrana bastıran kodu yazınız
+// Kategorileri ekrana bastıran kodu yazınız.
 
-// Kitapları sayfa sayısına göre filtreleyen kodu yazınız
-// Kütüphanedeki tüm kitapların sayfa sayısının toplamını hesaplayan kodu yazınız
-// Kitap başlığına göre filtreleme işlemleri yapınız 
-// Kitap ISBn numarasına göre ilgili kitabı getrininiz 
+// Kitapları Sayfa sayısına göre filtreleyen kodu yazınız.
+// Kütüphanedeki tüm kitapların sayfa sayısı toplamını hesaplayan kodu yazınız.
+// Kitap başlığına göre filtreleme  işlemleri yapınız
+// Kitap ISBN numarasına göre ilgili kitabı getiriniz.
 
-// Kitaplar listesine yeni bir kitap ekleyip sonra listeyi ekran çıktısı olarak yazınız (Verileri kullanıcdan alınız) 
+// Kitaplar listesine yeni bir kitap ekleyip eklendikten sonra listeyi ekran çıktısı
+// olarak veriniz.(Verileri kullanıcıdan alınız.)
+// * Kitap eklerken Id si veya ISBN numarası daha önceki eklenen kitaplarda var ise 
+// Benzersiz bir kitap girmeniz gerekmektedir yazısı çıksın.
 
-// * Kitap eklerken ID'si veya ISBM numarası daha önceki eklenen kitaplada var ise
-// "benzersiz bir kitap girmeniz" gerekmektedir yazısı çıksın 
+// Kullanıcı bir Id girdiği zaman o id ye göre kitabı silen ve yeni listeyi ekrana bastıran
+// kodu yazınız.
 
-// Kullanıcı bir Id giridği zaman o ID'ye göre o kitabı silen ve yeni listeyi ekrana bastıran kodu yazınız 
 
-// Kullanıcıdan ilk başta ID değeri alın arama yaptıktan sonra eğer o ID ye ait bir kitap yoksa "İlgili ID'ye ait bir kitap bulunamadı"
-// Güncellenecek olan değerler kullanıcdan alınacak. 
+// Kullanıcıdan ilk başta id değeri alıp arama yaptıktan sonra eğer o Id ye ait
+// bir kitap yoksa "İlgili Id ye ait bir kitap bulunamadı."
+//* Güncellenecek olan değerler kullanıcıdan alınacak.
 
-// Kullanıcıdan bir kitap almasını isteyen kodu yazınız
-// eğer o kitap Stokta varsa "kitap alındı" desin
-// 1 tane varsa o kitap alınsın 0 olursa listeden silinsin 
+// Kullanıcıdan bir kitap almasını isteyen kodu yazınız 
+// Eğer o kitap Stok da varsa kitap alındı yazısı çıksın 
+// 1 tane varsa o kitap alınsın ve 0 olursa Listeden silinsin.
 
 
 
 // Prime Örnekler 
-// BookDetail adında bir record oluşturun şu değerler listeleecek
-// Kitap Id, kitap başlığı, kitap açıklaması, kitap sayfa sayısı, ISBN, Yazar adı, kategori adı 
+// BookDetail adında bir record oluşturup şu değerler listelenecek
+// Kitap Id, Kitap Başlığı , Kitap Açıklaması, Kitap Sayfa Sayısı, ISBN ,
+// Yazar Adı, Kategori Adı
 
 
-// Kullanıcıdan PageIndex ve PageSize değerlerini alarak sayfalama desteği getiriniz 
+// Kullanıcıdan PageIndex ve PageSize değerlerini alarak sayfalama desteği getiriniz.
+
 
 using LibraryManagement.ConsoleUI.Models;
-using LibraryManagement.ConsoleUI.Repository;
 using LibraryManagement.ConsoleUI.Service;
-using System.Security.Cryptography.X509Certificates;
-using static System.Reflection.Metadata.BlobBuilder;
-
-
-List<Category> categories = new List<Category>()
-{
-    new Category(1, "Dünya Klasikleri"),
-    new Category(2, "Türka Klasikleri"),
-    new Category(3, "Bilim Kurgu")
-};
 
 
 
 //GetAllBooksByPageSizeFilter();
+
 //GetAllAuthors();
 //GetAllCategories();
 //PageSizeTotalCalculator();
+
 //GetAllBooksByTitleContains();
+
 //GetBookByISBN();
 
 BookService bookService = new BookService();
-//bookService.GetAll();
-//bookService.GetById(6);
-//bookService.GetBookByISBN("9781234567800");
+//bookService.GetAll(); 
+//bookService.GetById(3);
+bookService.GetAllDetailsByCategoryId(2);
 
-//bookService.GetAllBooksByPageSİzeFilter();
 
-bookService.GetBookMaxSize();
-bookService.GetBookMinSize();
-//bookService.GetAllBookAndAuthorDetails();
+Book book1 = new Book();
 
-Book GetBookInputs2()
-{
-    Console.WriteLine("Lütfen kitap id sini giriniz: ");
-    int id = Convert.ToInt32(Console.ReadLine());
+//Book GetBookInputs2()
+//{
+//    Console.WriteLine("Lütfen kitap id sini giriniz: ");
+//   int id = Convert.ToInt32(Console.ReadLine());
 
-    Console.WriteLine("Lütfen kitap başlığını giriniz: ");
-    string title = Console.ReadLine();
+//    Console.WriteLine("Lütfen kitap başlığını giriniz: ");
+//    string title = Console.ReadLine();
 
-    Console.WriteLine("Lütfen kitap Açıklamasını giriniz: ");
-    string description = Console.ReadLine();
+//    Console.WriteLine("Lütfen kitap Açıklamasını giriniz: ");
+//   string description = Console.ReadLine();
 
-    Console.WriteLine("Lütfen kitap sayfasını giriniz: ");
-    int pageSize = Convert.ToInt32(Console.ReadLine());
+//    Console.WriteLine("Lütfen kitap sayfasını giriniz: ");
+//   int pageSize = Convert.ToInt32(Console.ReadLine());
 
-    Console.WriteLine("Lütfen kitap Yayımlanma Tarihini giriniz: ");
-    string publishDate = Console.ReadLine();
+//    Console.WriteLine("Lütfen kitap Yayımlanma Tarihini giriniz: ");
+//   string publishDate = Console.ReadLine();
 
-    Console.WriteLine("Lütfen kitap ISBN numarasını giriniz: ");
-    string isbn = Console.ReadLine();
+//    Console.WriteLine("Lütfen kitap ISBN numarasını giriniz: ");
+//    string isbn = Console.ReadLine();
 
-    Book book = new Book(id, 1,1, title, description, pageSize, publishDate, isbn);
-    return book;
-}
+//    Book book = new Book(id,1,1, title, description, pageSize, publishDate, isbn);
+//    return book;
+//}
 
 //bool AddBookValidator(Book book)
 //{

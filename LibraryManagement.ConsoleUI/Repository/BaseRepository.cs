@@ -45,17 +45,17 @@ public abstract class BaseRepository
     {
         new Member
         {
-            Id="Özgüven baskılanması",
+            Id="1",
             Age= 25,
-            Name = "Eva",
-            Surname = "Neva"
+            Name = "Emre",
+            Surname = "Tanrıkulu"
         },
         new Member
         {
-            Id="Sosyal Ankastreler Off YHAAA",
-            Name ="Sosyal Ankastre 1",
-            Surname = "Sosyal Ankastre 2",
-            Age = 25,
+            Id="2",
+            Name ="Ali",
+            Surname = "Çalışkan",
+            Age = 27,
         }
     };
 

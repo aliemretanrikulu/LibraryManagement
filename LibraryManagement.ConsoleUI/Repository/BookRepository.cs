@@ -1,8 +1,6 @@
 ﻿using LibraryManagement.ConsoleUI.Models;
 using LibraryManagement.ConsoleUI.Models.DTO;
-using LibraryManagement.ConsoleUI.Service;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
+
 
 namespace LibraryManagement.ConsoleUI.Repository;
 
@@ -11,14 +9,12 @@ public class BookRepository : BaseRepository, IBookRepository
     private List<Book> books;
     private List<Category> categories;
     private List<Author> authors;
-
-   public BookRepository()
+    public BookRepository()
     {
         books = Books();
         categories = Categories();
         authors = Authors();
     }
-
 
 
     public List<Book> GetAll()
@@ -63,18 +59,17 @@ public class BookRepository : BaseRepository, IBookRepository
     public List<Book> GetAllBooksByTitleContains(string text)
     {
         //List<Book> filteredBooks = new List<Book>();
-        //foreach (Book book in books)
+        //foreach(Book book in books)
         //{
-        //    if (book.Title.Contains(text, StringComparison.InvariantCultureIgnoreCase))
+        //    if (book.Title.Contains(text,StringComparison.InvariantCultureIgnoreCase))
         //    {
         //        filteredBooks.Add(book);
         //    }
         //}
+        //return filteredBooks;
 
-        List<Book> result = books.FindAll(b => b.Title.Contains(text, StringComparison.InvariantCultureIgnoreCase));
-        return result;
-
-       
+        List<Book> filteredBooks = books.FindAll(x => x.Title.Contains(text, StringComparison.InvariantCultureIgnoreCase));
+        return filteredBooks;
     }
 
     public Book? GetBookByISBN(string isbn)
@@ -140,31 +135,31 @@ public class BookRepository : BaseRepository, IBookRepository
         return deletedBook;
     }
 
-
-    public List<Book> GetAllBooksOrderByTitle()
+    public List<Book> GetAllBookOrderByTitle()
     {
         List<Book> orderedBooks = books.OrderBy(b => b.Title).ToList();
         return orderedBooks;
     }
 
-    public List<Book> GetAllBooksOrderByDescending()
+
+    public List<Book> GetAllBookOrderByDescendingTitle()
     {
         List<Book> orderedBooks = books.OrderByDescending(b => b.Title).ToList();
         return orderedBooks;
     }
 
-    public Book GetBookMaxSize()
+    public Book GetBookMaxPageSize()
     {
-
-        Book? maxBooks = books.OrderByDescending(b => b.PageSize).FirstOrDefault();
-        return maxBooks;
+        Book book = books.OrderBy(x => x.PageSize).LastOrDefault();
+        return book;
     }
 
-    public Book GetBookMinSize()
-    {
-        Book? minBooks = books.OrderBy(b => b.PageSize).FirstOrDefault();
-        return minBooks;
 
+
+    public Book GetBookMinPageSize()
+    {
+        Book book = books.OrderByDescending(x => x.PageSize).LastOrDefault() ?? books.First();
+        return book;
     }
 
     public List<BookDetailDto> GetDetails()
@@ -175,34 +170,14 @@ public class BookRepository : BaseRepository, IBookRepository
             on b.CategoryId equals c.Id
             select new BookDetailDto(
                 Id: b.Id,
-                CategoryName: c.Name, "",
+                CategoryName: c.Name,
+                "",
                 Title: b.Title,
                 Description: b.Description,
                 PageSize: b.PageSize,
                 PublishDate: b.PublishDate,
                 ISBN: b.ISBN
                 );
-
-        return result.ToList();
-
-
-    }
-
-    public List<BookDetailDto> GetAuthorAndBookDetails()
-    {
-        var result =
-            from b in books
-            join c in categories on b.CategoryId equals c.Id
-            join a in authors on b.AuthorId equals a.Id
-            select new BookDetailDto(
-                Id: b.Id,
-                Title: b.Title,
-                CategoryName: c.Name,
-                AuthorName: $"{ a.Name} {a.Surname}",
-                Description: b.Description,
-                PageSize: b.PageSize,
-                PublishDate: b.PublishDate,
-                ISBN: b.ISBN);
 
         return result.ToList();
     }
@@ -229,15 +204,14 @@ public class BookRepository : BaseRepository, IBookRepository
         return details;
     }
 
-    public List<BookDetailDto> GetAllDetailsByCategoryId(int categoryId)
+    public List<BookDetailDto> GetAllAuthorAndBookDetails()
     {
         var result =
             from b in books
-            where b.CategoryId == categoryId
             join c in categories on b.CategoryId equals c.Id
-            join a in authors on b.CategoryId equals a.Id 
-            select new BookDetailDto
-            (
+            join a in authors on b.AuthorId equals a.Id
+
+            select new BookDetailDto(
                 Id: b.Id,
                 Title: b.Title,
                 CategoryName: c.Name,
@@ -245,9 +219,39 @@ public class BookRepository : BaseRepository, IBookRepository
                 Description: b.Description,
                 PageSize: b.PageSize,
                 PublishDate: b.PublishDate,
-                ISBN: b.ISBN);
+                ISBN: b.ISBN
+                );
 
         return result.ToList();
-
     }
-   }
+
+    public List<BookDetailDto> GetAllDetailsByCategoryId(int categoryId)
+    {
+        var result =
+           from b in books
+           where b.CategoryId == categoryId
+           join c in categories on b.CategoryId equals c.Id
+           join a in authors on b.AuthorId equals a.Id
+
+           select new BookDetailDto(
+               Id: b.Id,
+               Title: b.Title,
+               CategoryName: c.Name,
+               AuthorName: $"{a.Name} {a.Surname}",
+               Description: b.Description,
+               PageSize: b.PageSize,
+               PublishDate: b.PublishDate,
+               ISBN: b.ISBN
+               );
+
+        return result.ToList();
+    }
+
+    public List<string> GetAllTitles()
+    {
+        List<string> titles =
+             books.Select(x => x.Title).ToList();
+
+        return titles;
+    }
+}
